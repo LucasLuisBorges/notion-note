@@ -1,7 +1,6 @@
 import { getNotionsByUser } from "@/server/actions/notion/get-notions-by-user";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { CreateNotionForm } from "../forms/create-notion-form";
 import { NotionCard } from "../notion-card";
 
 export async function Notion() {
@@ -13,10 +12,6 @@ export async function Notion() {
 
   return (
     <section className="relative space-y-10">
-      <div className="flex justify-end">
-        <CreateNotionForm />
-      </div>
-
       <div className="flex flex-col w-full gap-5">
         {!notions?.length && (
           <h1 className="text-center text-foreground/80">

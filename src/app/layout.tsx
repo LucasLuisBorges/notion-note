@@ -5,6 +5,7 @@ import "@/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: {
@@ -33,9 +34,8 @@ export default function RootLayout({
             fontMono.className
           )}
         >
-          {/*HEADER*/}
+          <Toaster theme="dark" />
           {children}
-          {/*FOOTER*/}
         </body>
       </html>
     </ClerkProvider>

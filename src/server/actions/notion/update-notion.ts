@@ -12,13 +12,13 @@ export async function updateNotion({
   userId?: string | null;
 }): Promise<ActionResponse> {
   if (!userId) {
-    return { message: "User id not provided", status: "error" };
+    return { message: "Usuário não encontrado", status: "error" };
   }
 
   const validatedFields = UpdateNotionSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { message: "Invalid fields", status: "error" };
+    return { message: "Campos inválidos", status: "error" };
   }
 
   const { id, title, company, message, priority, status, term } =
@@ -27,7 +27,7 @@ export async function updateNotion({
   const notionExists = await db.notion.findUnique({ where: { id } });
 
   if (!notionExists) {
-    return { message: "Notion does not exist", status: "error" };
+    return { message: "Anotação não existe", status: "error" };
   }
 
   await db.notion.update({
@@ -42,5 +42,5 @@ export async function updateNotion({
     },
   });
 
-  return { message: "Category updated successfully", status: "success" };
+  return { message: "Anotação atualizada com sucesso", status: "success" };
 }
