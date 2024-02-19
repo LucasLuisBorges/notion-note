@@ -2,6 +2,7 @@ import { fontMono } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -23,17 +24,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br" suppressHydrationWarning>
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontMono.className
-        )}
-      >
-        {/*HEADER*/}
-        {children}
-        {/*FOOTER*/}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="pt-br" suppressHydrationWarning>
+        <body
+          className={cn(
+            "min-h-screen bg-background font-sans antialiased",
+            fontMono.className
+          )}
+        >
+          {/*HEADER*/}
+          {children}
+          {/*FOOTER*/}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

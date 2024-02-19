@@ -3,14 +3,24 @@
 import { CreateNotionSchema } from "@/schemas/notion";
 import { db } from "@/server/db";
 
-export async function createNotion({ values }: { values: CreateNotionSchema }) {
+export async function createNotion({
+  values,
+  userId,
+}: {
+  values: CreateNotionSchema;
+  userId?: string | null;
+}) {
+  if (!userId) {
+    return { message: "User id not provided", status: "error" };
+  }
+
   const validatedFields = CreateNotionSchema.safeParse(values);
 
   if (!validatedFields.success) {
     return { message: "Invalid fields", status: "error" };
   }
 
-  const { title, message, status, term, content, userId } =
+  const { title, message, status, term, company, priority } =
     validatedFields.data;
 
   await db.notion.create({
@@ -19,6 +29,8 @@ export async function createNotion({ values }: { values: CreateNotionSchema }) {
       message,
       status,
       term,
+      company,
+      priority,
       userId,
     },
   });

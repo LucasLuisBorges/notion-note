@@ -1,5 +1,5 @@
-import { CreateNotionSchema } from "@/schemas/notion";
-import { createNotion } from "@/server/actions/notion/create-notion";
+import { UpdateNotionSchema } from "@/schemas/notion";
+import { updateNotion } from "@/server/actions/notion/update-notion";
 import { useAuth } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
@@ -44,29 +44,28 @@ const NotionPriority = [
   },
 ];
 
-export function useCreateNotion() {
+export function useUpdateNotion() {
   const { userId } = useAuth();
   const [isPending, startTransition] = useTransition();
   const [isOpen, setIsOpen] = useState(false);
 
-  const form = useForm<CreateNotionSchema>({
-    resolver: zodResolver(CreateNotionSchema),
-    defaultValues: {
-      title: "",
-      message: "",
-      status: undefined,
-      term: undefined,
-    },
+  const form = useForm<UpdateNotionSchema>({
+    resolver: zodResolver(UpdateNotionSchema),
+    defaultValues: {},
   });
 
-  const onSubmit = async (values: CreateNotionSchema) => {
+  const onSubmit = async (values: UpdateNotionSchema) => {
     startTransition(async () => {
-      const response = await createNotion({ values, userId });
+      const response = await updateNotion({
+        values,
+        userId,
+      });
+
       if (response.status === "error") {
         toast.error(response.message);
       } else {
         setIsOpen(false);
-        toast.success("Anotação criada com sucesso!");
+        toast.success("Anotação atualizada com sucesso!");
       }
     });
   };
@@ -75,9 +74,9 @@ export function useCreateNotion() {
     isPending,
     onSubmit,
     form,
-    NotionStatus,
-    isOpen,
     setIsOpen,
+    isOpen,
+    NotionStatus,
     NotionPriority,
   };
 }

@@ -18,30 +18,23 @@ enum NotionStatus {
   DONE
 }
 
-model User {
-  id         String   @id @default(cuid())
-  first_name String
-  last_name  String
-  email      String   @unique
-  password   String
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-
-  notions Notion[]
-
-  @@map("user")
+enum Priority {
+  HIGHT
+  MEDIUM
+  LOW
 }
 
 model Notion {
-  id      String        @id @default(cuid())
-  title   String
-  message String
-  status  NotionStatus? @default(BACKLOG)
-  term    DateTime?
+  id       String        @id @default(cuid())
+  title    String
+  message  String
+  status   NotionStatus? @default(BACKLOG)
+  term     DateTime?
+  priority Priority?     @default(LOW)
+  company  String?
+  userId   String
 
   content Content[]
-  userId  String
-  user    User      @relation(fields: [userId], references: [id])
 
   @@map("notion")
 }
