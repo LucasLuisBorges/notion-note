@@ -7,8 +7,7 @@ export async function Notion() {
   const { userId } = auth();
   if (!userId) return redirect("/sign-in");
 
-  const res = await getNotionsByUser({ userId });
-  const notions = res.body;
+  const { body: notions } = await getNotionsByUser({ userId });
 
   return (
     <section className="relative space-y-10">

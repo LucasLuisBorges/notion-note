@@ -34,7 +34,7 @@ export default function RootLayout({
             fontMono.className
           )}
         >
-          <Toaster theme="dark" />
+          <Toaster theme="dark" position="top-right" />
           {children}
         </body>
       </html>

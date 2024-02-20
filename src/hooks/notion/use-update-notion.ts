@@ -1,10 +1,12 @@
-import { UpdateNotionSchema } from "@/schemas/notion";
-import { updateNotion } from "@/server/actions/notion/update-notion";
 import { useAuth } from "@clerk/nextjs";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { UpdateNotionSchema } from "@/schemas/notion";
+import { updateNotion } from "@/server/actions/notion/update-notion";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const NotionStatus = [
   {
@@ -46,6 +48,7 @@ const NotionPriority = [
 
 export function useUpdateNotion() {
   const { userId } = useAuth();
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -65,6 +68,7 @@ export function useUpdateNotion() {
         toast.error(response.message);
       } else {
         setIsOpen(false);
+        router.refresh();
         toast.success("Anotação atualizada com sucesso!");
       }
     });
