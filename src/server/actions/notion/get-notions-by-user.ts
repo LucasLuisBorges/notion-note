@@ -15,7 +15,7 @@ export async function getNotionsByUser({
 
   const notions = await db.notion.findMany({
     where: {
-      userId: userId,
+      userId,
     },
   });
 
