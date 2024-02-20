@@ -1,3 +1,4 @@
+import { CreateNotionForm } from "@/components/forms/create-notion-form";
 import { Hero } from "@/components/home/hero";
 import { Notion } from "@/components/home/notion";
 import { Navbar } from "@/components/navbar";
@@ -13,6 +14,7 @@ export default async function HomePage() {
       <Navbar />
       <Hero />
       <Notion />
+      <CreateNotionForm />
     </main>
   );
 }

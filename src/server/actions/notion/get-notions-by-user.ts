@@ -10,7 +10,7 @@ export async function getNotionsByUser({
   userId: string | null | undefined;
 }): Promise<ActionResponse<Notion[]>> {
   if (!userId) {
-    return { message: "User not provided", status: "error" };
+    return { message: "Usuário não encontrado", status: "error" };
   }
 
   const notions = await db.notion.findMany({
@@ -20,7 +20,7 @@ export async function getNotionsByUser({
   });
 
   return {
-    message: "Stores fetched successfully",
+    message: "Anotações encontradas com sucesso",
     status: "success",
     body: notions,
   };

@@ -11,13 +11,13 @@ export async function createNotion({
   userId?: string | null;
 }) {
   if (!userId) {
-    return { message: "User id not provided", status: "error" };
+    return { message: "Usuário não encontrado", status: "error" };
   }
 
   const validatedFields = CreateNotionSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { message: "Invalid fields", status: "error" };
+    return { message: "Compos inválidos", status: "error" };
   }
 
   const { title, message, status, term, company, priority } =
@@ -35,5 +35,5 @@ export async function createNotion({
     },
   });
 
-  return { message: "Notion added successfully", status: "success" };
+  return { message: "Anotação criada com sucesso", status: "success" };
 }

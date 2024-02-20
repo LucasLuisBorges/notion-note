@@ -4,7 +4,7 @@ import { useCreateNotion } from "@/hooks/notion/use-create-notion";
 import { format } from "date-fns";
 
 import { cn } from "@/lib/utils";
-import { CalendarIcon, Pencil } from "lucide-react";
+import { CalendarIcon, Plus } from "lucide-react";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
@@ -41,9 +41,11 @@ export function CreateNotionForm() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button size="lg" className="flex gap-2 text-white">
-          <Pencil size={18} />
-          Cadastrar Novo
+        <Button
+          size="icon"
+          className="fixed bottom-6 right-6 h-14 w-14 flex rounded-full gap-2 text-white"
+        >
+          <Plus size={26} />
         </Button>
       </DialogTrigger>
       <DialogContent>
