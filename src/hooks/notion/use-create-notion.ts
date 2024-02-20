@@ -2,6 +2,7 @@ import { CreateNotionSchema } from "@/schemas/notion";
 import { createNotion } from "@/server/actions/notion/create-notion";
 import { useAuth } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -46,6 +47,7 @@ const NotionPriority = [
 
 export function useCreateNotion() {
   const { userId } = useAuth();
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -66,6 +68,7 @@ export function useCreateNotion() {
         toast.error(response.message);
       } else {
         setIsOpen(false);
+        router.refresh();
         toast.success("Anotação criada com sucesso!");
       }
     });
