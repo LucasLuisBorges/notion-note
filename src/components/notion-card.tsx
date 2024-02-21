@@ -1,5 +1,6 @@
 "use client";
 import { useDeleteNotion } from "@/hooks/notion/use-delete-notion";
+import { cn } from "@/lib/utils";
 import { Notion } from "@prisma/client";
 import { Trash } from "lucide-react";
 import { UpdateNotionForm } from "./forms/update-notion-form";
@@ -29,7 +30,9 @@ export function NotionCard({ notion }: { notion: Notion }) {
   };
 
   return (
-    <Card className="rounded-md">
+    <Card
+      className={cn("rounded-md", notion.status === "DONE" && "opacity-50")}
+    >
       <CardHeader className="flex flex-row items-center justify-between">
         <div className="flex flex-col">
           <CardTitle>{notion.title}</CardTitle>
