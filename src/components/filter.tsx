@@ -4,6 +4,7 @@ import { useFilterNotion } from "@/hooks/filter/use-filter-notion";
 import { cn } from "@/lib/utils";
 import { Notion } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import {
@@ -25,14 +26,16 @@ export function Filter({ notion }: { notion: Notion[] }) {
   const [companiesData, setCompaniesData] = useState<DataType[]>([]);
   const [statusData, setStatusData] = useState<DataType[]>([]);
 
+  const router = useRouter();
+
   const {
     form,
-    setFilter,
     handleClear,
     openCompany,
     setOpenCompany,
     openStatus,
     setOpenStatus,
+    createQueryString,
   } = useFilterNotion();
 
   useEffect(() => {
@@ -61,7 +64,7 @@ export function Filter({ notion }: { notion: Notion[] }) {
 
     setCompaniesData(companiesArray);
     setStatusData(statusArray);
-  }, [notion]);
+  }, []);
 
   function generateRandomId(): string {
     return Math.random().toString(36).substring(7);
@@ -102,8 +105,14 @@ export function Filter({ notion }: { notion: Notion[] }) {
                               value={framework.id}
                               key={framework.id}
                               onSelect={(value) => {
-                                setFilter("company", framework.title);
                                 field.onChange(value);
+                                router.push(
+                                  "?" +
+                                    createQueryString(
+                                      "company",
+                                      framework.title
+                                    )
+                                );
                                 setOpenCompany(false);
                               }}
                               className="cursor-pointer"
@@ -161,7 +170,10 @@ export function Filter({ notion }: { notion: Notion[] }) {
                               value={framework.id}
                               key={framework.id}
                               onSelect={(value) => {
-                                setFilter("status", framework.title);
+                                router.push(
+                                  "?" +
+                                    createQueryString("status", framework.title)
+                                );
                                 field.onChange(value);
                                 setOpenStatus(false);
                               }}

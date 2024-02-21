@@ -5,7 +5,11 @@ import { Navbar } from "@/components/navbar";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams?: { company?: string; status?: string };
+}) {
   const { userId } = auth();
   if (!userId) return redirect("/sign-in");
 
@@ -13,7 +17,7 @@ export default async function HomePage() {
     <main className="relative max-w-screen-xl space-y-10 mx-auto px-4 md:px-8 py-16">
       <Navbar />
       <Hero />
-      <Notion />
+      <Notion params={searchParams} />
       <CreateNotionForm />
     </main>
   );
