@@ -24,7 +24,6 @@ type DataType = {
 
 export function Filter({ notion }: { notion: Notion[] }) {
   const [companiesData, setCompaniesData] = useState<DataType[]>([]);
-  const [statusData, setStatusData] = useState<DataType[]>([]);
 
   const router = useRouter();
 
@@ -36,19 +35,15 @@ export function Filter({ notion }: { notion: Notion[] }) {
     openStatus,
     setOpenStatus,
     createQueryString,
+    NotionStatus,
   } = useFilterNotion();
 
   useEffect(() => {
     const uniqueCompanies = new Map<string, string>();
-    const uniqueStatus = new Map<string, string>();
 
     notion.forEach((item) => {
       if (item.company !== null && !uniqueCompanies.has(item.company)) {
         uniqueCompanies.set(item.company, generateRandomId());
-      }
-
-      if (item.status !== null && !uniqueStatus.has(item.status)) {
-        uniqueStatus.set(item.status, generateRandomId());
       }
     });
 
@@ -57,13 +52,7 @@ export function Filter({ notion }: { notion: Notion[] }) {
       title,
     }));
 
-    const statusArray = Array.from(uniqueStatus).map(([title, id]) => ({
-      id,
-      title,
-    }));
-
     setCompaniesData(companiesArray);
-    setStatusData(statusArray);
   }, []);
 
   function generateRandomId(): string {
@@ -153,9 +142,9 @@ export function Filter({ notion }: { notion: Notion[] }) {
                       aria-expanded={openStatus}
                       className="w-full justify-between rounded-xl py-3"
                     >
-                      {statusData?.find(
-                        (framework) => framework.id === field.value
-                      )?.title || "---"}
+                      {NotionStatus?.find(
+                        (framework) => framework.value === field.value
+                      )?.label || "---"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
@@ -165,16 +154,16 @@ export function Filter({ notion }: { notion: Notion[] }) {
                         <CommandInput placeholder="Buscar status..." />
                         <CommandEmpty>Nenhum status encontrado.</CommandEmpty>
                         <CommandGroup>
-                          {statusData?.map((framework) => (
+                          {NotionStatus?.map((framework) => (
                             <CommandItem
-                              value={framework.id}
-                              key={framework.id}
+                              value={framework.value}
+                              key={framework.value}
                               onSelect={(value) => {
                                 router.push(
                                   "?" +
-                                    createQueryString("status", framework.title)
+                                    createQueryString("status", framework.value)
                                 );
-                                field.onChange(value);
+                                field.onChange(value.toUpperCase());
                                 setOpenStatus(false);
                               }}
                               className="cursor-pointer"
@@ -182,12 +171,12 @@ export function Filter({ notion }: { notion: Notion[] }) {
                               <Check
                                 className={cn(
                                   "mr-2 h-4 w-4",
-                                  field.value === framework.id
+                                  field.value === framework.value
                                     ? "opacity-100"
                                     : "opacity-0"
                                 )}
                               />
-                              {framework.title}
+                              {framework.label}
                             </CommandItem>
                           ))}
                         </CommandGroup>

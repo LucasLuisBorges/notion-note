@@ -4,6 +4,29 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 
+const NotionStatus = [
+  {
+    value: "BACKLOG",
+    label: "ESPERA",
+  },
+  {
+    value: "PENDING",
+    label: "PENDENTE",
+  },
+  {
+    value: "RUNNING",
+    label: "DESENVOLVIMENTO",
+  },
+  {
+    value: "REVIEW",
+    label: "ANALISE",
+  },
+  {
+    value: "DONE",
+    label: "PRONTO",
+  },
+];
+
 export function useFilterNotion() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -36,6 +59,7 @@ export function useFilterNotion() {
     openCompany,
     setOpenStatus,
     openStatus,
+    NotionStatus,
     handleClear,
     createQueryString,
   };
