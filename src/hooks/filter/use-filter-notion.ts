@@ -1,11 +1,12 @@
 import { FilterSchema } from "@/schemas/filter";
-import { useGlobalFilterStore } from "@/store/globalFilterStores";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 
 export function useFilterNotion() {
-  const { company, status, setFilter } = useGlobalFilterStore();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [openCompany, setOpenCompany] = useState(false);
   const [openStatus, setOpenStatus] = useState(false);
@@ -14,21 +15,28 @@ export function useFilterNotion() {
     resolver: zodResolver(FilterSchema),
   });
 
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
   const handleClear = () => {
     form.reset();
-    setFilter("company", "");
-    setFilter("status", "");
+    router.push("/");
   };
 
   return {
     form,
-    company,
-    status,
-    setFilter,
     setOpenCompany,
     openCompany,
     setOpenStatus,
     openStatus,
     handleClear,
+    createQueryString,
   };
 }
