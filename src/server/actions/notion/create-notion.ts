@@ -17,7 +17,7 @@ export async function createNotion({
   const validatedFields = CreateNotionSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { message: "Compos inválidos", status: "error" };
+    return { message: "Campos inválidos", status: "error" };
   }
 
   const { title, message, status, term, company, priority } =
