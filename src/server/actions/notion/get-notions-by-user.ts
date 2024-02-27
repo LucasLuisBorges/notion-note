@@ -1,14 +1,14 @@
 "use server";
 
 import { ActionResponse } from "@/@types/action-response";
+import { NotionIProps } from "@/components/notion-card";
 import { db } from "@/server/db";
-import { Notion } from "@prisma/client";
 
 export async function getNotionsByUser({
   userId,
 }: {
   userId: string | null | undefined;
-}): Promise<ActionResponse<Notion[]>> {
+}): Promise<ActionResponse<NotionIProps[]>> {
   if (!userId) {
     return { message: "Usuário não encontrado", status: "error" };
   }
