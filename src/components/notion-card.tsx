@@ -70,7 +70,7 @@ export function NotionCard({ notion }: { notion: NotionIProps }) {
       </CardHeader>
       <CardContent className="text-foreground/80 space-y-4">
         <p>{notion.message}</p>
-        {notion.content.length &&
+        {notion.content.length > 0 &&
           notion.content.map((itens) => (
             <ContentItens
               key={itens.id}
