@@ -42,10 +42,10 @@ model Notion {
 model Content {
   id    String  @id @default(cuid())
   title String
-  check Boolean
+  check Boolean @default(false)
 
-  contentId String
-  content   Notion @relation(fields: [contentId], references: [id])
+  notionId String
+  notion   Notion @relation(fields: [notionId], references: [id])
 
   @@map("content")
 }

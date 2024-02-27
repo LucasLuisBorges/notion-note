@@ -17,6 +17,9 @@ export async function getNotionsByUser({
     where: {
       userId,
     },
+    include: {
+      content: true,
+    },
   });
 
   return {

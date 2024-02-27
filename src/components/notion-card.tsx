@@ -1,9 +1,13 @@
 "use client";
+
 import { useDeleteNotion } from "@/hooks/notion/use-delete-notion";
 import { cn } from "@/lib/utils";
-import { Notion } from "@prisma/client";
+import { $Enums, Content } from "@prisma/client";
 import { Trash } from "lucide-react";
+import { useState } from "react";
+import { ContentItens } from "./content-itens";
 import { UpdateNotionForm } from "./forms/update-notion-form";
+import { SubItensCard } from "./sub-itens-card";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
@@ -21,7 +25,20 @@ const priorityMapping: Record<string, string> = {
   HIGHT: "ALTA",
 };
 
-export function NotionCard({ notion }: { notion: Notion }) {
+export interface NotionIProps {
+  id: string;
+  title: string;
+  message: string;
+  status: $Enums.NotionStatus | null;
+  term: Date | null;
+  priority: $Enums.Priority | null;
+  company: string | null;
+  userId: string;
+  content: Content[];
+}
+
+export function NotionCard({ notion }: { notion: NotionIProps }) {
+  const [createContent, setCreateContent] = useState(false);
   const { isPending, onSubmit } = useDeleteNotion();
 
   const formatDate = (dateString: string) => {
@@ -51,29 +68,52 @@ export function NotionCard({ notion }: { notion: Notion }) {
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="text-foreground/80">{notion.message}</CardContent>
-      <div className="flex justify-between items-center p-6">
-        <div className="flex flex-col space-y-1">
-          <span>
-            Prioridade:{" "}
-            {priorityMapping[notion.priority ?? ""] ?? notion.priority}
-          </span>
-          <span>
-            Status: {statusMapping[notion.status ?? ""] ?? notion.status}
-          </span>
-        </div>
-        <div>
-          {notion.term && (
-            <span className="text-foreground/80">
-              Prazo: {formatDate(String(notion.term))}
+      <CardContent className="text-foreground/80 space-y-4">
+        <p>{notion.message}</p>
+        {notion.content.length &&
+          notion.content.map((itens) => (
+            <ContentItens
+              key={itens.id}
+              content={itens}
+              disable={notion.status === "DONE"}
+            />
+          ))}
+        {!createContent && (
+          <Button
+            className="flex gap-1 cursor-pointer w-fit"
+            size="sm"
+            onClick={(set) => setCreateContent(!!set)}
+            disabled={notion.status === "DONE"}
+          >
+            <span>Adicionar item</span>
+          </Button>
+        )}
+        {createContent && (
+          <SubItensCard notion={notion} setOpen={setCreateContent} />
+        )}
+        <div className="flex justify-between items-center">
+          <div className="flex flex-col space-y-1">
+            <span>
+              Prioridade:{" "}
+              {priorityMapping[notion.priority ?? ""] ?? notion.priority}
             </span>
-          )}
+            <span>
+              Status: {statusMapping[notion.status ?? ""] ?? notion.status}
+            </span>
+          </div>
+          <div>
+            {notion.term && (
+              <span className="text-foreground/80">
+                Prazo: {formatDate(String(notion.term))}
+              </span>
+            )}
 
-          {!notion.term && (
-            <span className="text-foreground/80">Prazo não definido</span>
-          )}
+            {!notion.term && (
+              <span className="text-foreground/80">Prazo não definido</span>
+            )}
+          </div>
         </div>
-      </div>
+      </CardContent>
     </Card>
   );
 }
