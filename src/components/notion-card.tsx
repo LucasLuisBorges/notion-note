@@ -70,14 +70,16 @@ export function NotionCard({ notion }: { notion: NotionIProps }) {
       </CardHeader>
       <CardContent className="text-foreground/80 space-y-4">
         <p>{notion.message}</p>
-        {notion.content.length > 0 &&
-          notion.content.map((itens) => (
-            <ContentItens
-              key={itens.id}
-              content={itens}
-              disable={notion.status === "DONE"}
-            />
-          ))}
+        <div className="space-y-2">
+          {notion.content.length > 0 &&
+            notion.content.map((itens) => (
+              <ContentItens
+                key={itens.id}
+                content={itens}
+                disable={notion.status === "DONE"}
+              />
+            ))}
+        </div>
         {!createContent && (
           <Button
             className="flex gap-1 cursor-pointer w-fit"

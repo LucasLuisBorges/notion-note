@@ -152,7 +152,10 @@ export function UpdateNotionForm({ notion }: { notion: Notion }) {
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>Prioridade</FormLabel>
-                      <Select onValueChange={field.onChange}>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Selecione a prioridade" />
@@ -203,7 +206,7 @@ export function UpdateNotionForm({ notion }: { notion: Notion }) {
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel>Status</FormLabel>
-                    <Select onValueChange={field.onChange}>
+                    <Select value={field.value} onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione o status" />
